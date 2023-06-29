@@ -26,35 +26,26 @@ arabic_characters = ['alef', 'beh', 'teh', 'theh', 'jeem', 'hah', 'khah', 'dal',
 # print(f"Train Images: {X_train.shape}")
 # print(f"Test Images: {X_test.shape}")
 
-# Model creation (VGG-16 architecure)
+# Model creation (LeNet-5 architecure)
 
-def mod(input_shape, num_classes):
+def lenet5(input_shape, num_classes):
     model = Sequential()
 
-    # Convolutional Layer C1
     model.add(Conv2D(6, kernel_size=(5, 5), strides=(1, 1), activation='relu', input_shape=input_shape))
-
-    # Subsampling Layer S2
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-
-    # Convolutional Layer C3
+    
     model.add(Conv2D(16, kernel_size=(5, 5), strides=(1, 1), activation='relu'))
-
-    # Subsampling Layer S4
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-
-    # Flatten the feature maps
+    
     model.add(Flatten())
-
-    # Fully Connected Layer F5
     model.add(Dense(120, activation='relu'))
 
-    # Output Layer F6
     model.add(Dense(num_classes, activation='softmax'))
+    
     return model
 
 # Initialise model using pre-defined function
-model = mod((32,32,1), 29)
+model = lenet5((32,32,1), 29)
 # model = vgg16((32,32,1), len(np.unique(Y_train))+1)
 
 # Compile the model
@@ -63,11 +54,11 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train model
-model.fit(X_train, Y_train, epochs=5)
+model.fit(X_train, Y_train, epochs=30)
 
 # Evaluate model metrics 
 loss, accuracy = model.evaluate(X_test, Y_test)
 print(f"Accuracy: {accuracy}, Loss: {loss}")
 
 # Save model 
-model.save('1.model')
+model.save('lenet5.model')
