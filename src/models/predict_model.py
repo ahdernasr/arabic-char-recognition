@@ -4,6 +4,7 @@ import tensorflow as tf
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 arabic_characters = ['alef', 'beh', 'teh', 'theh', 'jeem', 'hah', 'khah', 'dal', 'thal',
                     'reh', 'zain', 'seen', 'sheen', 'sad', 'dad', 'tah', 'zah', 'ain',
@@ -47,13 +48,15 @@ model = tf.keras.models.load_model("../../models/lenet5.model")
 # predicted_class-=1
 # print(f"Probably: {arabic_characters[predicted_class]}")
 
-testing_index = 1159
-sample = X_test[testing_index]
-predictions = model.predict(tf.expand_dims(sample, axis=0))
-predicted_class = tf.argmax(predictions, axis=1).numpy()[0]
-predicted_class-=1
-print(f"Probably: {arabic_characters[predicted_class]}")
-print(f"Actually: {arabic_characters[Y_test[testing_index][0]-1]}")
-plt.imshow(sample, cmap=plt.cm.binary)
-plt.show()
-# 1194
+
+n_tests = 5
+for l in range(n_tests):
+    i = random.randint(1, X_test.shape[0])
+    sample = X_test[i]
+    predictions = model.predict(tf.expand_dims(sample, axis=0))
+    predicted_class = tf.argmax(predictions, axis=1).numpy()[0]
+    predicted_class-=1
+    print(f"Probably: {arabic_characters[predicted_class]}")
+    print(f"Actually: {arabic_characters[Y_test[i][0]-1]}")
+    plt.imshow(sample, cmap=plt.cm.binary)
+    plt.show()
