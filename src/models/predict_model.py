@@ -38,7 +38,8 @@ X_test = tf.keras.utils.normalize(X_test, axis=1)
 
 # Load model 
 
-model = tf.keras.models.load_model("../../models/lenet5.model")
+# model = tf.keras.models.load_model("../../models/lenet5.model")
+model = tf.keras.models.load_model("../../models/vgg16.model")
 # model.summary()
 
 # TESTING OWN IMAGE (32x32 jpg, png, jpeg, etc.)
@@ -60,3 +61,16 @@ for l in range(n_tests):
     print(f"Actually: {arabic_characters[Y_test[i][0]-1]}")
     plt.imshow(sample, cmap=plt.cm.binary)
     plt.show()
+
+# loop through mis-identified characters in the test set
+# range = 200
+# for i in range(200):
+#     sample = X_test[i]
+#     predictions = model.predict(tf.expand_dims(sample, axis=0))
+#     predicted_class = tf.argmax(predictions, axis=1).numpy()[0]
+#     predicted_class-=1
+#     if (arabic_characters[predicted_class] != arabic_characters[Y_test[i][0]-1]):
+#         print(f"Probably: {arabic_characters[predicted_class]}")
+#         print(f"Actually: {arabic_characters[Y_test[i][0]-1]}")
+#         plt.imshow(sample, cmap=plt.cm.binary)
+#         plt.show()

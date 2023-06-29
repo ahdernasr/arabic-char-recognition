@@ -44,9 +44,32 @@ def lenet5(input_shape, num_classes):
     
     return model
 
+def vgg16(input_shape, num_classes):
+    model = tf.keras.models.Sequential([
+        Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=input_shape),
+        Conv2D(64, (3, 3), activation='relu', padding='same'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        Conv2D(128, (3, 3), activation='relu', padding='same'),
+        Conv2D(128, (3, 3), activation='relu', padding='same'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        Conv2D(128, (3, 3), activation='relu', padding='same'),
+        Conv2D(128, (3, 3), activation='relu', padding='same'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        Flatten(),
+        Dense(4096, activation='relu'),
+        Dense(4096, activation='relu'),
+
+        Dense(num_classes, activation='softmax')
+    ])
+    
+    return model
+
 # Initialise model using pre-defined function
-model = lenet5((32,32,1), 29)
-# model = vgg16((32,32,1), len(np.unique(Y_train))+1)
+# model = lenet5((32,32,1), 29)
+model = vgg16((32,32,1), 29)
 
 # Compile the model
 model.compile(optimizer='adam',
@@ -54,11 +77,12 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train model
-model.fit(X_train, Y_train, epochs=30)
+model.fit(X_train, Y_train, epochs=8)
 
 # Evaluate model metrics 
 loss, accuracy = model.evaluate(X_test, Y_test)
 print(f"Accuracy: {accuracy}, Loss: {loss}")
 
 # Save model 
-model.save('lenet5.model')
+model_name = 'vgg16_extended2'
+model.save(f'{model_name}.model')
